@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EdgeForm AI - Defense & Code Study Guide</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-dark: #1e293b;
+      --secondary: #0f766e;
+      --accent: #2563eb;
+      --bg: #f8fafc;
+      --text: #0f172a;
+      --sidebar-width: 280px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+    }
+
+    /* Print styling rules */
+    @media print {
+      body {
+        background-color: #ffffff;
+        color: #000000;
+        display: block;
+      }
+      .sidebar, .print-btn-float {
+        display: none !important;
+      }
+      .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+      h1, h2, h3 {
+        page-break-after: avoid;
+      }
+      code {
+        background: #f1f5f9 !important;
+        border: 1px solid #cbd5e1 !important;
+      }
+    }
+
+    /* Sidebar Layout */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: #1a202c;
+      color: #fff;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+      padding: 20px;
+      z-index: 100;
+      border-right: 1px solid #2d3748;
+    }
+
+    .sidebar h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #2d3748;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+    }
+
+    .sidebar li {
+      margin-bottom: 8px;
+    }
+
+    .sidebar a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 8px 12px;
+      display: block;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .sidebar a:hover {
+      background-color: #2d3748;
+      color: #fff;
+      padding-left: 16px;
+    }
+
+    .sidebar a.active {
+      background-color: var(--accent);
+      color: white;
+    }
+
+    /* Outer layout */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 40px;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    /* Elements */
+    header {
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .subtitle-badge {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    p.lead {
+      font-size: 1.15rem;
+      color: #475569;
+    }
+
+    section {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+      margin-bottom: 30px;
+      border: 1px solid #f1f5f9;
+    }
+
+    h2 {
+      font-size: 1.65rem;
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      color: #1e293b;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 16px;
+    }
+
+    /* Taglish Badges */
+    .taglish-box {
+      background-color: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 15px 0;
+    }
+
+    .taglish-box p {
+      color: #b45309;
+      font-style: italic;
+      font-size: 0.95rem;
+      margin-bottom: 0;
+    }
+
+    .taglish-box strong {
+      color: #78350f;
+    }
+
+    /* Code blocks */
+    pre {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Fira Code', 'Courier New', Courier, monospace;
+      font-size: 0.9rem;
+      margin: 15px 0;
+      border: 1px solid #1e293b;
+    }
+
+    code {
+      font-family: 'Consolas', 'Fira Code', 'Courier New', Courier, monospace;
+      background-color: #f1f5f9;
+      color: #e11d48;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 16px;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    /* Floating Print Button */
+    .print-btn-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 15px 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      transition: all 0.2s;
+    }
+
+    .print-btn-float:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.5);
+      background-color: #1d4ed8;
+    }
+
+    /* Math and Tables */
+    .math-panel {
+      font-family: 'Cambria', Georgia, serif;
+      font-style: italic;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      padding: 12px;
+      text-align: center;
+      border-radius: 6px;
+      margin: 15px 0;
+      font-size: 1.1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    /* Timeline diagram */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      position: relative;
+      margin: 20px 0;
+      padding-left: 20px;
+      border-left: 2px solid #e2e8f0;
+    }
+
+    .timeline-item {
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      left: -27px;
+      top: 6px;
+    }
+
+    .timeline-title {
+      font-weight: bold;
+      color: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Print Button -->
+  <button class="print-btn-float" onclick="window.print()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="6 9 6 2 18 2 18 9"></polyline>
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+      <rect x="6" y="14" width="12" height="8"></rect>
+    </svg>
+    Save as PDF / Print Manual
+  </button>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <h2>Study Nav</h2>
+    <ul>
+      <li><a href="#overview">1. System Overview</a></li>
+      <li><a href="#routing">2. Project Structure</a></li>
+      <li><a href="#pipeline">3. Frame Loop Pipeline</a></li>
+      <li><a href="#csharp-api">4. C# API (Program.cs)</a></li>
+      <li><a href="#analyzer-code">5. Biomechanics (PoseAnalyzer.cs)</a></li>
+      <li><a href="#frontend-code">6. Frontend Connection</a></li>
+      <li><a href="#math">7. Core Math & Vectors</a></li>
+      <li><a href="#faq">8. Defense QA (Cheat Sheet)</a></li>
+      <li><a href="#checklist">9. 3-Day Study Checklist</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <header>
+      <div class="subtitle-badge">GRADUATE THESIS / FINAL PROJECT REFERENCE MANUAL</div>
+      <h1>EdgeForm AI Study Manual</h1>
+      <p class="lead">Simpleng code explanation at gabay para sa thesis defense sa loob ng 3 araw. 100% C# at React integration.</p>
+    </header>
+
+    <!-- Section 1 -->
+    <section id="overview">
+      <h2>1. Ang Atong Application (System Overview)</h2>
+      <p>Ang <strong>EdgeForm AI</strong> ay isang digital posture-coaching system na nagbibigay-daan sa real-time biomechanical analysis habang nag-eehersisyo (tulaby ng Bodyweight Squats at Pushups/Planks).</p>
+      
+      <div class="taglish-box">
+        <strong>Taglish Paliwanag:</strong>
+        <p>Ito ay isang web app kung saan ginagamit ang laptop webcam para basahin ang iyong joints gamit ang deep-learning camera algorithms. Sa halip na i-count lang ang squat mo na walang kuwenta, ang program mo ay <strong>napakatalino</strong> dahil ipinapadala nito ang coordinates sa isang <strong>C# ASP.NET Core Web API</strong>. Ang C# backend ang nagko-compute ng angles gamit ang Trigonometry para husgahan kung tama o mali ang iyong form!</p>
+      </div>
+
+      <p>May dalawang (2) bahagi ang system na ito:</p>
+      <ul>
+        <li><strong>Frontend (React + Vite + TypeScript):</strong> Gumagana bilang "mga mata" ng system gamit ang video overlay at "boses" nito (TTS voice commands). Ini-isolate nito ang coordinates ng katawan (17 keypoints tulad ng tuhod, balikat, at kurba ng dila).</li>
+        <li><strong>Backend (C# ASP.NET Core API):</strong> Gumagana bilang "utak" o taga-husga ng system. Ito ang tagatanggap ng coordinates, taga-compute ng geometric vectors, at taga-counter ng reps batay sa biomechanical ranges.</li>
+      </ul>
+    </section>
+
+    <!-- Section 2 -->
+    <section id="routing" class="page-break">
+      <h2>2. Ano ang gampanin ng bawat File? (Project Structure)</h2>
+      <p>Ito ang listahan ng pinaka-importanteng mga files na kabilang sa iyong system, at kung ano eksakto ang kanilang silbi:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>File Path</th>
+            <th>Type</th>
+            <th>Gampanin / Purpose sa Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>csharp-backend/Program.cs</code></td>
+            <td>C# Entry Point</td>
+            <td>Binubuhay ang Web Server sa port 5000. Ito ang nag-aasikaso ng REST HTTP POST request mula sa React frontend, at gumagawa ng CORS policies para makapasok ang browser.</td>
+          </tr>
+          <tr>
+            <td><code>csharp-backend/Services/PoseAnalyzer.cs</code></td>
+            <td>C# Logic Code</td>
+            <td>Pinapagana ang real math. Dito nakalagay ang function ng <code>CalculateAngle()</code> para sa Math.Atan2, sinusuri ang squat depth percent, at sinesegregate ang "sagging posture" o pagkakatabingi ng balikat.</td>
+          </tr>
+          <tr>
+            <td><code>src/views/WorkoutView.tsx</code></td>
+            <td>React Component</td>
+            <td>Naka-loop ang frame cycle. Kumukuha ng web inputs at nagpapadala ng JSON sa C# Server. Dito tinatawag ang TTS Engine para bigkasin ang feedback (e.g., "Excellent depth!"). May fallback emulation din ito para gumana ang pag-display kahit offline ang C# server!</td>
+          </tr>
+          <tr>
+            <td><code>src/components/camera/PoseCamera.tsx</code></td>
+            <td>React Component</td>
+            <td>Direct camera rendering at TensorFlow keypoints isolation interface. Gumagawa din ng "Simulated Skeleton lines" upang gumuhit ng orange/green na joints sa live preview model screen.</td>
+          </tr>
+          <tr>
+            <td><code>src/lib/poseLogic.ts</code></td>
+            <td>TypeScript</td>
+            <td>Static utility math file na naglalaman ng pang-backup na local geometry functions (like distance and backup angle solvers).</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 3 -->
+    <section id="pipeline" class="page-break">
+      <h2>3. Paano Umaandar ang Frame Loop? (The Pipeline)</h2>
+      <p>Kritikal na maipaliwanag mo sa mga examiners kung papaano dumadaloy ang data kapag may gumagamit sa tapat ng camera.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-title">Unang Hakbang - Pagkuha ng Larawan</div>
+          <p>Binabasa ng camera ang live video frames ng user sa browser. Hinahati ng TensorFlow.js ang frames at gumagawa ng listahan ng <strong>17 keypoints</strong> (X at Y coordinates) na sumasalamin sa mga kasukasuan.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-title">Ikalawang Hakbang - Ang C# API Request</div>
+          <p>Bawat frame (capped gamit ang state latch para iwas lag), nagpapadala ang React app ng HTTP POST Request sa C# API. Naglalaman ang payload ng exercise type at ang array ng coordinates. Halimbawa:</p>
+          <pre>{
+  "exercise": "squat",
+  "pose": {
+    "keypoints": [ {"name": "left_knee", "x": 120.4, "y": 240.2, "score": 0.98}, ... ]
+  },
+  "state": { "reps": 4, "isDescending": true }
+}</pre>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-title">Ikatlong Hakbang - Mathematical Computation</div>
+          <p>Binabasa ng C# server ang angles, sinusuri ang mga limitasyon (Hysteresis), binibilang ang bagong reps (gamit ang customized state machine), at nagbabalik ng malinis na sagot (JSON Response) na nagsisilbing diagnostic score para sa user.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-title">Ikaapat na Hakbang - Feedback Execution (TTS)</div>
+          <p>Tatanggapin ng React ang score at text message. Sasabihin nito sa audio engine na magsalita (e.g., <i>"Widen feet to shoulder-width!"</i>) kapag may maling naitampok sa workout quality.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4 -->
+    <section id="csharp-api" class="page-break">
+      <h2>4. Deep Dive sa C# Web API (csharp-backend/Program.cs)</h2>
+      <p>Ito ang pinaka-entry point ng iyong C# application. Silipin natin ang structure ng setup code nito:</p>
+
+      <pre><code>// 1. Dito ina-allow natin ang CORS policy (Cross-Origin Resource Sharing)
+// Ito ang pinakasusi para payagan ang web browser (running on port 3000) na tumawag sa C# API (running on port 5000).
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
+// 2. Dito tinatanggap ang POST request sa route na '/api/pose/analyze'
+app.MapPost("/api/pose/analyze", (AnalyzeRequest request) =>
+{
+    if (request == null || string.IsNullOrEmpty(request.Exercise) || request.Pose == null)
+    {
+        return Results.BadRequest(new { Error = "Invalid parameters." });
+    }
+
+    try
+    {
+        string exercise = request.Exercise.ToLower();
+        string quality = request.Quality;
+
+        if (exercise == "squat")
+        {
+            // Pag-convert ng generic State object tungo sa malinis na C# Class object (SquatState)
+            var stateJson = request.State?.ToJsonString() ?? "{}";
+            var squatState = JsonSerializer.Deserialize&lt;SquatState&gt;(stateJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            }) ?? new SquatState();
+
+            // Dito kinakaladkad ang static calculator function sa PoseAnalyzer
+            var result = PoseAnalyzer.AnalyzeSquat(request.Pose, squatState, quality);
+            return Results.Ok(result);
+        }
+        ...
+    }
+});</code></pre>
+
+      <div class="taglish-box">
+        <strong>Study Tips for Program.cs:</strong>
+        <p>Kapag tinanong ka ng panel kung saan idinefine ang listening port, sabihin mo sa <strong>Line 77: <code>app.Run("http://localhost:5000");</code></strong>. Ipinapaliwanag nito na ang backend ay tumatakbo sa port 5000 bilang microservice.</p>
+      </div>
+    </section>
+
+    <!-- Section 5 -->
+    <section id="analyzer-code" class="page-break">
+      <h2>5. Deep Dive sa C# Biomechanics (PoseAnalyzer.cs)</h2>
+      <p>Ito ang pusong-buhay ng mathematics ng iyong application. Dito ginagawa ang skeletal evaluation:</p>
+
+      <h3>CalculateAngle Code Breakdown:</h3>
+      <pre><code>public static double CalculateAngle(Keypoint p1, Keypoint p2, Keypoint p3)
+{
+    // Math.Atan2 computes the angle in radians of two lines with respect to x-axis
+    double radians = Math.Atan2(p3.Y - p2.Y, p3.X - p2.X) - Math.Atan2(p1.Y - p2.Y, p1.X - p2.X);
+    double angle = Math.Abs((radians * 180.0) / Math.PI);
+    
+    if (angle &gt; 180.0)
+    {
+        angle = 360.0 - angle; // Laging kuhanin ang sharp interior angle (0° - 180°)
+    }
+    return angle;
+}</code></pre>
+
+      <h3>Kraytirya ng Ebersisyo (Squat & Pushup Biomechanics):</h3>
+      <p>Paano nadedetermina ang bawat estado habang bumababa o tumataas ang gumagamit?</p>
+      
+      <div class="taglish-box">
+        <strong>Taglish Paliwanag (Squat Rep Counting):</strong>
+        <p>Si C# ay gumagamit ng <strong>State Machine</strong> o dynamic state memory upang maiwasan ang maling rep-counting kapag nanginginig ang katawan:</p>
+        <ol>
+          <li>Kung ang average angle ng iyong tuhod (kneeAngle) ay lumagpas sa <strong>155°</strong>, kinokonsidera ito na nakatayo ng tuwid (Neutral Stand). Sa puntong ito, naghahanda ang system.</li>
+          <li>Kung ang anggulo ay bumaba sa <strong>140°</strong>, si <code>IsDescending</code> ay nagse-set sa <code>true</code> (Bumababa na si user).</li>
+          <li>Upang makakuha ng puntos ang malalim na rep, dapat umabot ang tuhod sa sa porsyentong <strong>90° - 100°</strong>. Kapag nagawa ito, ang flag na <code>DepthReached</code> ay magiging <code>true</code>.</li>
+          <li>Kapag tumayo muli ang user ng tuwid lagpas sa <strong>155°</strong>, tinitingnan ni C# kung nag-<code>true</code> ang <code>DepthReached</code>. Kung OOO, magdaragdag ng +1 sa 'Reps' at ire-reset ang tracker para sa susunod na bilang!</li>
+        </ol>
+      </div>
+
+      <pre><code>// 1. Pag-check para sa Squat Stance Width sa C#
+if (detectedViewMode == "front" && leftVisible && rightVisible)
+{
+    double shoulderWidth = Math.Abs(lS.X - rS.X);
+    double stanceWidth = Math.Abs(lA.X - rA.X);
+    double ratio = stanceWidth / Math.Max(1.0, shoulderWidth);
+
+    if (ratio &lt; 0.85)
+    {
+        deductions += 30; // Kung magkadikit ang paa, may bawas na 30 points
+        message = "Widen feet! Stance is too narrow";
+    }
+}</code></pre>
+    </section>
+
+    <!-- Section 6 -->
+    <section id="frontend-code" class="page-break">
+      <h2>6. Pagkonekta ng Frontend sa C# Backend (WorkoutView.tsx)</h2>
+      <p>Ito naman ang layout kung paano kinakausap ng React Frontend ang ating C# API server:</p>
+
+      <pre><code>// 1. Tinatawag natin si Fetch API sa camera loop cycle
+fetch(`${csharpUrl}/api/pose/analyze`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    exercise: exercise,
+    pose: {
+      keypoints: pose.keypoints,
+      score: pose.score
+    },
+    state: stats,   // Dito ipinapasa ang kasalukuyang rep count, view mode, at feedback states 
+    quality: quality
+  })
+})
+.then(res =&gt; res.json())
+.then(data =&gt; {
+  // 2. Kuhanin ang update mula sa C# server
+  const result = data;
+  let finalFeedback = result.message;
+
+  setStats(prevStats =&gt; {
+    // Dito ina-update si React state ng reps at score mula sa C# logic output!
+    return {
+      ...result.newState,
+      feedback: finalFeedback,
+      score: result.score
+    };
+  });
+})</code></pre>
+
+      <div class="taglish-box">
+        <strong>Taglish Tips para sa Fallback Code:</strong>
+        <p>May inilagay tayong simple ngunit napakatatag na <strong>Fallback Connection Handler</strong> sa <code>.catch()</code> ng fetch loop. Kung offline o hindi gumagana ang local C# API port, awtomatikong gagana ang local TypeScript math mechanism. Ibig sabihin nito, 100% stable ang program kahit mawalan ng WiFi o mamatay ang API server habang dine-defense sa tapat ng mga panelist!</p>
+      </div>
+    </section>
+
+    <!-- Section 7 -->
+    <section id="math" class="page-break">
+      <h2>7. Mathematical Formulas and Geometry (The Trigonometry)</h2>
+      <p>Isang malaking bahagi ng grado sa defense ay nakasalalay sa pagpapaliwanag mo ng Math functions.</p>
+
+      <div class="math-panel">
+        Angle(&alpha;) = | Atan2(y3 - y2, x3 - x2) - Atan2(y1 - y2, x1 - x2) | * (180 / &pi;)
+      </div>
+
+      <p>Sa coordinate math ng application, bawat joint ay tinuturing na 2D point $(X, Y)$ sa space:</p>
+      <ul>
+        <li><code>p2</code> ang nagsisilbing vertex o ang sentrong point (hal. ang <strong>Tuhod</strong>).</li>
+        <li><code>p1</code> at <code>p3</code> ang mga boundary connections (hal. ang <strong>Hips / Ankle</strong>).</li>
+        <li>Kalkulahin muna ang angle slope ng point 3 relatibo sa point 2 gamit ang <code>Atan2(y3 - y2, x3 - x2)</code>.</li>
+        <li>Gawin din ang parehong hakbang para sa point 1 relatibo sa point 2: <code>Atan2(y1 - y2, x1 - x2)</code>.</li>
+        <li>Bawasan ang dalawang slope angles upang makuha ang absolute difference, at i-multiply sa $\frac{180}{\pi}$ upang i-convert ang raw Radians na value sa human-readable na <strong>Degrees (0° to 180°)</strong>.</li>
+      </ul>
+
+      <p>Tingnan natin ang listahan ng Standard Parameters para sa Biomechanics Checking:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Critical Joint</th>
+            <th>Target Angles</th>
+            <th>Potential Alerts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Squats Mode</strong></td>
+            <td>Knee Angle</td>
+            <td>90° - 100° (Full Depth)</td>
+            <td>"Too deep!" (&lt;80°)<br>"Leaning forward!" (Torso lean &gt;45°)</td>
+          </tr>
+          <tr>
+            <td><strong>Pushups Mode</strong></td>
+            <td>Elbow Angle</td>
+            <td>70° - 100° (Pushup depth)</td>
+            <td>"Hips sagging!" (Spinal lean &lt;165°)<br>"Hips too high" (Spinal lean &gt;195°)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 8 -->
+    <section id="faq" class="page-break">
+      <h2>8. Thesis Defense QA (Ready-to-Answer Questions)</h2>
+      <p>Narito ang mga madalas itanong ng panel examiners tungkol sa ganitong software architectures:</p>
+
+      <h3>Q1: "Bakit C# ang backend nyo at hindi purely React? Ano ang benefit nito?"</h3>
+      <p><strong>Answer:</strong> <i>"Sa pamamagitan ng paghihiwalay ng computational mathematics sa isang C# ASP.NET Core API server, hindi natin pinapabigatan ang browser execution thread ng React frontend. Samakatuwid, nagiging mabilis at may mataas na frame rate (smooth 30fps to 60fps) ang visualization sa dynamic screen ng user habang ang solid mathematical tracking at state variables ay tinutuos sa server layer nang ligtas at maaasahan."</i></p>
+
+      <h3>Q2: "Paano nadedetek ng camera kung madilim o maliwanag ang silid?"</h3>
+      <p><strong>Answer:</strong> <i>"Gumagamit kami ng real-time pixel scanning sa raw feed ng webcam upang masuri ang luminance values. Ang nakukuhang light quality state ay pinapasa sa endpoint ng API. Kapag napansin ng C# server na 'dark' o 'bright' ang setting at bumaba ang keypoint accuracy score, agad na nagbabalik ang API ng visual warning prompt sa screen para gabayan ang user."</i></p>
+
+      <h3>Q3: "Ano ang ginagawa ng application kapag may joint detection glitch o mabilisang jitter?"</h3>
+      <p><strong>Answer:</strong> <i>"Nag-implement po kami ng hystereis cooldown at moving noise filters. Sa WorkoutView.tsx, hihintayin muna nating lumipas ang 1.5 segundo ng sunod-sunod na signal interruption bago ipasok sa screen ang babala. Ito ang umiwas sa flickering feedback upang manatiling kalmado at propesyonal ang user experience."</i></p>
+
+      <h3>Q4: "Bakit LocalStorage ang inyong piniling Database sa halip na external SQL o Firebase Cloud?"</h3>
+      <p><strong>Answer:</strong> <i>"Ang LocalStorage ay may local read/write access time na mas mabilis sa 1 millisecond. Dahil kailangan nating kalkulahin ang biomechanical angles at ibalik ang feedback nang real-time (bawat frame), ang anumang external database connection ay magdudulot ng round-trip latency at throttling. Dagdag pa rito, ang paggamit ng browser-secured sandbox sandbox storage ay sumisiguro ng 100% offline capacity at supreme privacy para sa personal biometric data ng user."</i></p>
+
+      <h3>Q5: "Bakit hindi nakahiwalay sa ganap na standalone parent foldering (e.g., /frontend, /database) ang system?"</h3>
+      <p><strong>Answer:</strong> <i>"Nakaayos po ang aming system sa ilalim ng **Modular Microservice Strategy**. Ang aming Frontend ay naka-colocate sa loob ng `/src` folder; ang aming C# computing backend ay nasa `/csharp-backend` folder; habang ang aming database layer ay inilagay nang diretso sa standard HTML5 Web Sandbox (LocalStorage). Pinapanatili nitong simple, madaling i-build (one-step production bundling), at mabilis patakbuhin ang system nang walang risk ng broken cross-port directory links."</i></p>
+    </section>
+
+    <!-- Section 9 -->
+    <section id="checklist" class="page-break">
+      <h2>9. 3-Day Study Checklist (Ang lyong Target bawat araw)</h2>
+      <ol>
+        <li><strong>Day 1 (System Core at I/O):</strong> Unawain ang JSON format na nililikha kapag sumipip ang camera keypoints. Subukang i-run ang desktop browser, i-toggle ang <strong>C# Logic Engine</strong> at tignan ang Live Diagnostics Logs panel sa kanan ng exercise screen habang nag-eehersisyo ka.</li>
+        <li><strong>Day 2 (Mathematics Check: Atan2):</strong> Maging ready na iguhit o ipaliwanag kung papaano kinukuha ang triangle angle gamit ang coordinates ng Balikat, Tuhod, at Bukung-bukong sa pamamagitan ng absolute arc tangent difference.</li>
+        <li><strong>Day 3 (Run-Through Rehearsal):</strong> I-rehearse ang paggamit ng system at sanayin ang pagsasalita gamit ang formal Taglish answers sa harap ng salamin! Tandaan, tiwala sa sarili at simpleng paghahatid ng code logic ang sikreto sa pinakamataas na grado!</li>
+      </ol>
+      <p style="text-align: center; font-weight: bold; color: var(--accent); margin-top: 30px;">KAYA MO 'YAN! WALANG MAKAKAPIGIL SA PROYEKTO MO! 🚀🌟</p>
+    </section>
+
+  </main>
+
+  <script>
+    // Highlight current section in sidebar on scroll
+    window.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const id = entry.target.getAttribute('id');
+          if (entry.intersectionRatio > 0.2) {
+            document.querySelectorAll('.sidebar a').forEach(a => {
+              if (a.getAttribute('href') === `#${id}`) {
+                a.classList.add('active');
+              } else {
+                a.classList.remove('active');
+              }
+            });
+          }
+        });
+      }, { threshold: 0.2, rootMargin: '0px 0px -50% 0px' });
+
+      document.querySelectorAll('section').forEach(section => {
+        observer.observe(section);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "EdgeForm Pro Fitness",
+  "description": "Professional real-time posture correction and biometric smart coaching on-device and private.",
+  "requestFramePermissions": [
+    "camera",
+    "autoplay"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
