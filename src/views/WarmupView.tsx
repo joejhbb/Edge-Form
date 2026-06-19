@@ -33,6 +33,22 @@ import { audioSynth } from '../lib/audioSynth';
 import { ExerciseType, UserProfile } from '../types';
 import { cn } from '../lib/utils';
 
+// Images
+import ankleImg from '../assets/images/ankle2.png';
+import hipImg from '../assets/images/hipc.png';
+import jumpingImg from '../assets/images/jumpingjacks.png';
+import wristImg from '../assets/images/circlewrist.png';
+import scapularImg from '../assets/images/scapular.png';
+import catcowImg from '../assets/images/catcow.png';
+
+// Videos
+import ankleVideo from "../assets/videos/ankle mobility flow.mp4";
+import hipVideo from "../assets/videos/hip.mp4";
+import jumpingVideo from "../assets/videos/jumping jacks.mp4";
+import wristVideo from "../assets/videos/circle wrist.mp4";
+import scapularVideo from "../assets/videos/Scapular Glides.mp4";
+import catcowVideo from "../assets/videos/cat cow .mp4";
+
 interface WarmupViewProps {
   key?: string;
   onBack: () => void;
@@ -65,8 +81,8 @@ const WARMUP_DRILLS: WarmupDrillDetail[] = [
     name: 'Ankle Mobility Flow',
     duration: 30,
     description: 'Keep heel flat on ground. Push knee forward dynamically over center toes to maximize ankle range of motion.',
-    image: 'src/assets/images/ankle (2).png',
-    video: "src/assets/videos/ankle mobility flow.mp4",
+    image: ankleImg,
+    video: ankleVideo,
     steps: [
       "Press your heel firmly down into the ground.",
       "Drive your knee directly forward over center toes to maximize range.",
@@ -79,8 +95,8 @@ const WARMUP_DRILLS: WarmupDrillDetail[] = [
     name: 'Hip Joint Circles',
     duration: 30,
     description: 'Place hands on hips and trace spacious circles to lubricate pelvic bone sockets and release lower back stiffness.',
-    image: 'src/assets/images/hipc.png',
-    video: "src/assets/videos/hip.mp4",
+    image: hipImg,
+    video:  hipVideo,
     steps: [
       "Place hands securely on your pelvic waistline.",
       "Trace wide outward circular patterns counter-clockwise.",
@@ -93,8 +109,8 @@ const WARMUP_DRILLS: WarmupDrillDetail[] = [
     name: 'Jumping Jacks',
     duration: 40,
     description: 'An explosive full-body movement to raise your heart rate, warm up your lower limb fast, and increase blood circulation.',
-    image: 'src/assets/images/jumpingjacks.png',
-    video: "src/assets/videos/jumping jacks.mp4",
+    image: jumpingImg,
+    video: jumpingVideo,
     steps: [
       "Stand with your feet together and your arms at your sides.",
       "Jump your feet out to the sides while raising your arms above your head.",
@@ -109,8 +125,8 @@ const WARMUP_DRILLS: WarmupDrillDetail[] = [
     name: 'Wrist Joint Circles',
     duration: 30,
     description: 'Interlock fingers and rotate wrists in smooth circles. Preps joint pads for push loads.',
-    image: 'src/assets/images/circlewrist.png',
-    video: "src/assets/videos/circle wrist.mp4",
+    image: wristImg,
+    video: wristVideo,
     steps: [
       "Interlock your fingers and bring palms together.",
       "Rotate wrists in smooth, continuous circles.",
@@ -123,8 +139,8 @@ const WARMUP_DRILLS: WarmupDrillDetail[] = [
     name: 'Scapular Glides',
     duration: 30,
     description: 'Retract and pinch shoulder blades back with straight arms to enable complete posture extension.',
-    image: 'src/assets/images/scapular.png',
-    video: "src/assets/videos/Scapular Glides.mp4",
+    image: scapularImg,
+    video: scapularVideo,
     steps: [
       "Support hands against a wall, bench or floor with straight arms.",
       "Retract and pinch shoulder blades back with absolute control.",
@@ -137,8 +153,8 @@ const WARMUP_DRILLS: WarmupDrillDetail[] = [
     name: 'Cat Cow Pose',
     duration: 45,
     description: 'Alternating between arching and rounding your spine to release upper body tension, mobilize the vertebrae, and warm up the neck/core.',
-    image: 'src/assets/images/catcow.png',
-    video: "src/assets/videos/cat cow .mp4",
+    image: catcowImg,
+    video: catcowVideo,
     steps: [
       "Start on your hands and knees in a tabletop position.",
       "Inhale, drop your belly, and look up to lift your chest and tailbone (Cow).",

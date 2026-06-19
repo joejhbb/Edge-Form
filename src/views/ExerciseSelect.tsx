@@ -18,6 +18,8 @@ import { ExerciseType, UserProfile } from '../types';
 import { cn } from '../lib/utils';
 import legsImg from '../assets/images/legs_workout_png_1779787720371.png';
 import chestImg from '../assets/images/chest_workout_png_1779787753054.png';
+import squatImg from '../assets/images/squat.png';
+import pushupImg from '../assets/images/pushup.png';
 
 interface ExerciseSelectProps {
   onBack: () => void;
@@ -40,7 +42,7 @@ const EXERCISES: { id: ExerciseType, category: string, name: string, level: stri
     level: 'Beginner • No Equipment', 
     time: '10 min', 
     cals: '85 kcal', 
-    image: 'src/assets/images/squat.png',
+    image: squatImg,
     description: 'Bodyweight (No equipment). Side-view squat tracking knee & hip flexion. Keep heels flat to avoid uneven/lopsided tilt.'
   },
 
@@ -52,7 +54,7 @@ const EXERCISES: { id: ExerciseType, category: string, name: string, level: stri
     level: 'Beginner • No Equipment', 
     time: '10 min', 
     cals: '70 kcal', 
-    image: "src/assets/images/pushup.png",
+    image: pushupImg,
     description: 'Bodyweight (No equipment). Side profile push-up tracking arm/elbow flexion and straight spine alignment.'
   }
 ];
@@ -237,7 +239,7 @@ export default function ExerciseSelect({ onBack, onSelect, userProfile }: Exerci
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.id)}
                     className={cn(
-                      "flex shrink-0 items-center gap-4 px-6 py-4 rounded-[2rem] border transition-all duration-300",
+                      "flex shrink-0 items-center gap-4 px-6 py-4 rounded-4xl border transition-all duration-300",
                       selectedCategory === cat.id 
                         ? "bg-white text-black border-white shadow-xl" 
                         : "bg-white/5 text-white/40 border-white/5 hover:border-white/10"
@@ -279,7 +281,7 @@ export default function ExerciseSelect({ onBack, onSelect, userProfile }: Exerci
                         )}
                       >
                         <div className={cn(
-                          "relative flex flex-col rounded-[2.5rem] overflow-hidden border-2 bg-[#070D13] shadow-2xl transition-all duration-500 min-h-[520px] h-auto pb-4",
+                          "relative flex flex-col rounded-[2.5rem] overflow-hidden border-2 bg-[#070D13] shadow-2xl transition-all duration-500 min-h-130 h-auto pb-4",
                           isAllowed 
                             ? "border-white/5 hover:border-lime-500/20 hover:shadow-[0_15px_30px_rgba(132,204,22,0.05)]" 
                             : "border-white/5 hover:border-orange-500/10 cursor-not-allowed"

@@ -28,6 +28,8 @@ import { ExerciseType, Pose } from '../types';
 import { calculateAngle } from '../lib/poseLogic';
 import { cn } from '../lib/utils';
 import { audioSynth } from '../lib/audioSynth';
+import squatVideo from '../assets/videos/SQUATS.mp4';
+import pushupVideo from '../assets/videos/MILITARYPUSHUPS.mp4';
 
 interface WorkoutViewProps {
   exercise: ExerciseType;
@@ -38,8 +40,8 @@ interface WorkoutViewProps {
 }
 
 const WORKOUT_VIDEO_CLIPS: Record<string, string> = {
-  squat: "src/assets/videos/SQUATS.mp4",
-  pushup: "src/assets/videos/MILITARYPUSHUPS.mp4"
+  squat: squatVideo,
+  pushup: pushupVideo
 };
 
 const getVideoUrl = (ex: string): string => {
